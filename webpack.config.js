@@ -2,6 +2,7 @@
 const path = require("path");
 const { web } = require("webpack");
 const webpack = require("webpack");
+const childProcess = require("child_process");
 module.exports = {
   mode: "development",
   entry: {
@@ -39,7 +40,11 @@ module.exports = {
   },
   plugins: [
     new webpack.BannerPlugin({
-      banner: "마지막 빌드 시간은 :" + new Date().toLocaleString() + "입니다.",
+      banner: `
+      Commit version : ${childProcess.execSync("git rev-parse --short HEAD")}
+      Committer : ${childProcess.execSync("git config user.name")}
+      Commit Date : ${new Date().toLocaleString()}
+      `,
     }),
   ],
 };
